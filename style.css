@@ -1,0 +1,69 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+body{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    margin-top: 10px;
+    align-items: space-around;
+    justify-content: center;
+}
+
+.wordle {
+    height: 650px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    /* border:3px solid rgb(20, 20, 20); */
+}
+
+.title{
+    display: flex;
+    height: 16%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+p {
+    font-size: 48px;
+    color: rgb(20, 20, 20);
+    font-style: bold;
+}
+
+.divider {
+    border-top: 3px solid rgb(20, 20, 20);
+    margin-bottom: 10px;
+}
+
+.game-section {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    height: 20%;
+    width: 100%;
+    flex-direction: row;
+    align-content: space-between;
+    justify-content: space-between;
+    
+}
+
+.input-box {
+    width: 20%;
+    height: auto;
+    margin: 10px;
+    border: 5px solid rgb(164, 164, 164);
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
