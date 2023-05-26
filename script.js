@@ -13,9 +13,10 @@ async function getWord() {
     const { word: wordRes } = await res.json();
     word = wordRes.toUpperCase();
 
-    for (let i = 0; i < word.length; i++) {
+    for (let i = 0; i < 5; i++) {
         wordChar.add(word[i]);
     }
+    console.log(word);
 }
 
 async function checkWord(givenWord) {
@@ -39,16 +40,13 @@ function isLetter(letter) {
 }
 
 function backspace(){
-    console.log("BACKSPACE");
-    console.log(pointer);
-    console.log(count);
     if (pointer[0] <= 0 && pointer[1] <= 0) {
         return
     } else if (pointer[1] == 0) {
         if (count != pointer[0]) {
             pointer = [pointer[0]-1, 4];
             //delete the character at the pointer spot
-            let loc = document.querySelector("[id='b"+ pointer[0] + pointer[1] + "']");
+            let loc = document.querySelector("[id='h"+ pointer[0] + pointer[1] + "']");
             loc.innerText= "";
             return
         } else {
@@ -57,33 +55,30 @@ function backspace(){
     } else {
         pointer = [pointer[0], pointer[1]-1];
         //delete the character at the pointer spot
-        let loc = document.querySelector("[id='b"+ pointer[0] + pointer[1] + "']");
+        let loc = document.querySelector("[id='h"+ pointer[0] + pointer[1] + "']");
         loc.innerText= "";
         return
     }
 }
 
 function addChar(char){
-    console.log("ADD CHAR");
-    console.log(pointer);
-    console.log(count);
     char = char.toUpperCase();
     if (pointer[0] >= 5) {
         return //game finished
     } else if (pointer[1] == 4) {
         //add the character at the pointer spot
-        let loc = document.querySelector("[id='b"+ pointer[0] + pointer[1] + "']");
+        let loc = document.querySelector("[id='h"+ pointer[0] + pointer[1] + "']");
         loc.innerText = char;
         //set pointer to the next empty spot (next row, 0)
         pointer = [pointer[0]+1, 0];
         return
     } else if (pointer[0] != count) {
         //add the character at the pointer[0]-1, 4 spot
-        let loc = document.querySelector("[id='b"+ (pointer[0]-1) + 4 + "']");
+        let loc = document.querySelector("[id='h"+ (pointer[0]-1) + 4 + "']");
         loc.innerText = char;
     } else {
         //add the character at the pointer spot
-        let loc = document.querySelector("[id='b"+ pointer[0] + pointer[1] + "']");
+        let loc = document.querySelector("[id='h"+ pointer[0] + pointer[1] + "']");
         loc.innerText = char;
         //set pointer to the next empty spot 
         pointer = [pointer[0], pointer[1]+1];
@@ -92,14 +87,16 @@ function addChar(char){
 }
 
 function enter(){
-    if (count == pointer[0] - 1){
+    if (count == (pointer[0] - 1)){
         let givenWord = "";
         for (let i = 0; i < 5; i++) {
-            let tmp = document.querySelector("[id='b"+ (pointer[0]-1) + pointer[i] + "']");
-            givenWord = givenWord + tmp;
+            let tmp = document.querySelector("[id='h"+ (pointer[0]-1) + i + "']");
+            givenWord = givenWord + tmp.innerText;
         }
         if (givenWord == word) {
-            correctWord();
+            setColor();
+            pointer = [5,0];
+            //CORRECT!!
         } else {
             checkWord(givenWord);
         }
@@ -110,31 +107,33 @@ function enter(){
 }
 
 function invalidWord(){
-    let elems = document.querySelectorAll(".row " + (pointer[0]-1)).children;
+
     for (let i = 0; i < 5; i++) {
-        elems[i].style.transition = "0.5s linear";
-        elems[i].style.border = "5px solid rgb(203, 44, 44)";
-    }
-    for (let i = 0; i < 5; i++) {
-        elems[i].style.transitionDelay = "1s"
-        elems[i].style.transition = "0.5s linear";
-        elems[i].style.border = "5px solid rgb(203, 44, 44)";
+        let box = document.querySelector("[id='b" + (pointer[0]-1) + i + "']");
+        box.style.transition = "0.3s linear";
+        box.style.border = "5px solid rgb(203, 44, 44)";
+        setTimeout(function(){
+            box.style.transition = "0.3s linear";
+            box.style.border = "5px solid rgb(164, 164, 164)";
+          }, 500);   
     }
     count -= 1;
 }
 
 function setColor(){
-    let elems = document.querySelectorAll(".row " + (pointer[0]-1)).children;
     for (let i = 0; i < 5; i++) {
-        if (wordChar.has(elems[i].innerText) && (word[i] == elems[i].innerText)) {
-            elems[i].style.transition = "0.5s linear";
-            elems[i].style.backgroundColor = "rgb(75, 184, 45)"; //green
-        } else if (wordChar.has(elems[i].innerText)) {
-            elems[i].style.transition = "0.5s linear";
-            elems[i].style.backgroundColor = "rgb(223, 184, 40)"; //yellow
+        let txt = document.querySelector("[id='h" + (pointer[0]-1) + i + "']");
+        let box = document.querySelector("[id='b" + (pointer[0]-1) + i + "']");
+        
+        if (word[i] == txt.innerText){
+            box.style.transition = "0.5s linear";
+            box.style.backgroundColor = "rgb(75, 184, 45)"; //green   
+        } else if (wordChar.has(txt.innerText)) {
+            box.style.transition = "0.5s linear";
+            box.style.backgroundColor = "rgb(223, 184, 40)"; //yellow
         } else {
-            elems[i].style.transition = "0.5s linear";
-            elems[i].style.backgroundColor = "rgb(139, 137, 137)"; //gray
+            box.style.transition = "0.5s linear";
+            box.style.backgroundColor = "rgb(139, 137, 137)"; //gray
         }
     }
 }
@@ -151,4 +150,3 @@ document.addEventListener('keydown', function(event) {
 });
 
 getWord();
-console.log(word);
