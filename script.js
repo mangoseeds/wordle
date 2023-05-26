@@ -96,7 +96,8 @@ function enter(){
         if (givenWord == word) {
             setColor();
             pointer = [5,0];
-            //CORRECT!!
+            let header = document.querySelector(".header");
+            header.classList.add("winner");
         } else {
             checkWord(givenWord);
         }
@@ -107,15 +108,15 @@ function enter(){
 }
 
 function invalidWord(){
-
     for (let i = 0; i < 5; i++) {
         let box = document.querySelector("[id='b" + (pointer[0]-1) + i + "']");
-        box.style.transition = "0.3s linear";
-        box.style.border = "5px solid rgb(203, 44, 44)";
-        setTimeout(function(){
-            box.style.transition = "0.3s linear";
-            box.style.border = "5px solid rgb(164, 164, 164)";
-          }, 500);   
+        box.classList.add("invalid")
+        // box.style.transition = "0.3s linear";
+        // box.style.border = "5px solid rgb(203, 44, 44)";
+        // setTimeout(function(){
+        //     box.style.transition = "0.3s linear";
+        //     box.style.border = "5px solid rgb(164, 164, 164)";
+        //   }, 500);      
     }
     count -= 1;
 }
@@ -126,16 +127,24 @@ function setColor(){
         let box = document.querySelector("[id='b" + (pointer[0]-1) + i + "']");
         
         if (word[i] == txt.innerText){
-            box.style.transition = "0.5s linear";
-            box.style.backgroundColor = "rgb(75, 184, 45)"; //green   
+            box.classList.add("correct");
+            // box.style.transition = "0.5s linear";
+            // box.style.backgroundColor = "rgb(75, 184, 45)"; //green   
         } else if (wordChar.has(txt.innerText)) {
-            box.style.transition = "0.5s linear";
-            box.style.backgroundColor = "rgb(223, 184, 40)"; //yellow
+            box.classList.add("close");
+            // box.style.transition = "0.5s linear";
+            // box.style.backgroundColor = "rgb(223, 184, 40)"; //yellow
         } else {
-            box.style.transition = "0.5s linear";
-            box.style.backgroundColor = "rgb(139, 137, 137)"; //gray
+            box.classList.add("wrong");
+            // box.style.transition = "0.5s linear";
+            // box.style.backgroundColor = "rgb(139, 137, 137)"; //gray
         }
     }
+}
+
+function correct() {
+    let elem = document.querySelector(".header");
+    elem.toggleAttribute('transition');
 }
 
 document.addEventListener('keydown', function(event) {
